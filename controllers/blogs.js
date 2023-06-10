@@ -11,12 +11,12 @@ router.get('/', async (_req, res) => {
   res.json(blogs);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const blog = await Blog.create(req.body);
     return res.json(blog);
   } catch (error) {
-    return res.status(400).json({ error });
+    next(error);
   }
 });
 
@@ -31,22 +31,27 @@ router.get('/:id', blogFinder, async (req, res) => {
 router.delete('/:id', blogFinder, async (req, res) => {
   if (req.blog) {
     await req.blog.destroy()
+    res.status(204).json({ message: 'Blog deleated' });
+  } else {
+    res.status(404)
   }
-  res.sendStatus(204);
 });
 
-router.put('/:id', blogFinder, async (req, res) => {
+router.put('/:id', blogFinder, async (req, res, next) => {
   const body = req.body
   if (req.blog) {
     try {
+      if (!body || !body.likes) {
+        return res.status(400).json({ error: "Missing or invalid request body" });
+      }
+
       const updatedBlog = await req.blog.update(
         { likes: body.likes },
         { where: { id: req.params.id } }
       )
-
-      res.status(200).json(updatedBlog)
+      return res.status(200).json(updatedBlog)
     } catch (error) {
-      return res.status(400).json({ error });
+      next(error);
     }
   } else {
     res.status(404).end()

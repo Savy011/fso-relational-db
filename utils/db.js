@@ -8,7 +8,6 @@ const sequelize = new Sequelize(DB_URL, {
 
 const connectToDatabase = async () => {
 	try {
-    console.log('Start')
 		await sequelize.authenticate()
 		console.log('Connected to the database')
 	} catch (error) {
