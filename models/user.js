@@ -13,7 +13,10 @@ User.init({
   username: {
     type: DataTypes.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
+	validate: {
+		is: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
+	}
   },
   name: {
     type: DataTypes.STRING,
