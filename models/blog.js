@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require('sequelize')
-const { sequelize } = require('../utils/db')
+const { Model, DataTypes } = require('sequelize');
+const { sequelize } = require('../utils/db');
 
 class Blog extends Model {}
 
@@ -11,7 +11,8 @@ Blog.init(
       autoIncrement: true
     },
     author: {
-      type: DataTypes.TEXT
+      type: DataTypes.STRING,
+      allowNull: false
     },
     url: {
       type: DataTypes.TEXT,
@@ -34,4 +35,4 @@ Blog.init(
   }
 );
 
-module.exports = Blog
+module.exports = Blog;
